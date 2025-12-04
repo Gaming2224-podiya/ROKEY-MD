@@ -1,12 +1,12 @@
 {
-  "name": "Queen_Anju",
-  "version": "4",
-  "description": "A Simple WhatsApp bot created By King-Rashmika",
-  "main": "queen.js",
+  "name": "ROKEY_MD",
+  "version": "8",
+  "description": "A Simple WhatsApp bot created By Peksha_rasanjana",
+  "main": "rokey.js",
   "scripts": {
-    "start": "pm2 start queen.js --deep-monitoring --attach --name Queen_Anju",
-    "stop": "pm2 stop Queen_Anju",
-    "restart": "pm2 restart Queen_Anju"
+    "start": "pm2 start rokey.js --deep-monitoring --attach --name ROKEY_MD",
+    "stop": "pm2 stop ROKEY_MD",
+    "restart": "pm2 restart ROKEY_MD"
   },
   "dependencies": {
     "@adiwajshing/keyed-db": "^0.2.4",
