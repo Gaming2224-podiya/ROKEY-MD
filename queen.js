@@ -174,7 +174,7 @@ async function connectToWA() {
             mediaType: 1,
             sourceUrl: "https://github.com/Gaming2224-podiya",
             thumbnailUrl:
-              "", // This should match the image URL provided above
+              "https://i.ibb.co/hRw0q6xS/tourl-1764894209781.jpg", // This should match the image URL provided above
             renderLargerThumbnail: false,
             showAdAttribution: true,
           },
