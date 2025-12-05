@@ -2,9 +2,9 @@
   "name": "ROKEY_MD",
   "version": "8",
   "description": "A Simple WhatsApp bot created By Peksha_rasanjana",
-  "main": "rokey.js",
+  "main": "queen.js",
   "scripts": {
-    "start": "pm2 start rokey.js --deep-monitoring --attach --name ROKEY_MD",
+    "start": "pm2 start queen.js --deep-monitoring --attach --name ROKEY_MD",
     "stop": "pm2 stop ROKEY_MD",
     "restart": "pm2 restart ROKEY_MD"
   },
