@@ -153,8 +153,6 @@ function handleCommand(conn, mek, m, context) {
       body,
       command,
       q,
-      apikey,
-      baseurl,
       isGroup,
       sender,
       senderNumber,
