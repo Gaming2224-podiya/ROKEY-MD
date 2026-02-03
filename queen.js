@@ -1,44 +1,31 @@
-// ===============================
-// ROKEY-MD | Queen Entry File
-// ===============================
-
 const {
   default: makeWASocket,
   useMultiFileAuthState,
-  DisconnectReason,
-  fetchLatestBaileysVersion
+  DisconnectReason
 } = require("@whiskeysockets/baileys")
 
-const pino = require("pino")
-const fs = require("fs")
+const Pino = require("pino")
 const path = require("path")
 
-// Load env if exists
-try {
-  require("dotenv").config()
-} catch {}
-
-// ===============================
+// ✅ command handler path (IMPORTANT)
+const commandHandler = require("./src/config/commandHandler")
 
 async function startBot() {
   const sessionPath = path.join(__dirname, "session")
+
   const { state, saveCreds } = await useMultiFileAuthState(sessionPath)
 
-  const { version } = await fetchLatestBaileysVersion()
-
   const sock = makeWASocket({
-    logger: pino({ level: "silent" }),
+    logger: Pino({ level: "silent" }),
     printQRInTerminal: true,
     auth: state,
-    version,
-    browser: ["ROKEY-MD", "Chrome", "1.0.0"]
+    browser: ["MOVIE ROCKY", "Chrome", "1.0"]
   })
 
+  // save session
   sock.ev.on("creds.update", saveCreds)
 
-  // ===============================
-  // Connection Update
-  // ===============================
+  // connection update
   sock.ev.on("connection.update", (update) => {
     const { connection, lastDisconnect } = update
 
@@ -47,51 +34,28 @@ async function startBot() {
         lastDisconnect?.error?.output?.statusCode
 
       if (reason !== DisconnectReason.loggedOut) {
-        console.log("🔄 Reconnecting...")
         startBot()
       } else {
-        console.log("❌ Logged out. Delete session folder and scan again.")
+        console.log("❌ Logged out. Delete session folder & rescan QR")
       }
     }
 
     if (connection === "open") {
-      console.log("✅ ROKEY-MD Connected Successfully!")
+      console.log("✅ MOVIE ROCKY BOT CONNECTED")
     }
   })
 
-  // ===============================
-  // Messages
-  // ===============================
+  // messages handler
   sock.ev.on("messages.upsert", async ({ messages }) => {
-    const msg = messages[0]
-    if (!msg.message || msg.key.fromMe) return
+    try {
+      const msg = messages[0]
+      if (!msg.message) return
 
-    const from = msg.key.remoteJid
-    const text =
-      msg.message.conversation ||
-      msg.message.extendedTextMessage?.text ||
-      ""
-
-    // Basic prefix
-    const prefix = "."
-    if (!text.startsWith(prefix)) return
-
-    const command = text.slice(1).trim().toLowerCase()
-
-    // ===============================
-    // Commands
-    // ===============================
-    if (command === "ping") {
-      await sock.sendMessage(from, { text: "🏓 Pong!" })
-    }
-
-    if (command === "alive") {
-      await sock.sendMessage(from, {
-        text: "🔥 ROKEY-MD is Alive & Running!"
-      })
+      await commandHandler(sock, msg)
+    } catch (err) {
+      console.log("Message Error:", err)
     }
   })
 }
 
-// ===============================
 startBot()
